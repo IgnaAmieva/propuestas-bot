@@ -30,6 +30,10 @@ PROHIBIDAS = [
     "fake review", "fake followers", "buy followers", "reseñas falsas",
     "seguidores falsos", "hack", "crack", "bypass", "casino", "betting",
     "adult", "onlyfans", "captcha solving", "account verification",
+    # Proyectos que piden una ubicación específica (no aplica desde Argentina)
+    "indian freelancer", "from india", "based in india", "only india",
+    "must be located", "must be based", "local only", "only from",
+    "us only", "usa only", "uk only", "native english",
 ]
 
 
