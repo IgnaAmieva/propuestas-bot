@@ -33,7 +33,8 @@ PROHIBIDAS = [
     # Proyectos que piden una ubicación específica (no aplica desde Argentina)
     "indian freelancer", "from india", "based in india", "only india",
     "must be located", "must be based", "local only", "only from",
-    "us only", "usa only", "uk only", "native english",
+    "us only", "usa only", "uk only", "native english", "indian freelance",
+    "hindi", "bay area",
 ]
 
 
@@ -43,11 +44,40 @@ def pedir(url, data=None, headers=None):
         return json.loads(r.read().decode())
 
 
+# El proyecto tiene que tener al menos una categoría de programación
+CATEGORIAS_OK = [
+    "web", "php", "javascript", "html", "css", "wordpress", "shopify", "woocommerce",
+    "app", "android", "iphone", "ios", "flutter", "react", "node", "next.js",
+    "python", "software", "api", "automation", "n8n", "zapier", "make.com",
+    "chatbot", "bot", "scraping", "mobile", "full stack", "frontend", "backend",
+    "database", "mysql", "postgres", "supabase", "firebase", "openai", "ai ",
+    "artificial intelligence", "machine learning", "typescript", "laravel",
+    "ecommerce", "e-commerce", "programming", "google apps script", "chrome",
+    "gohighlevel", "go high level", "saas",
+]
+# Si tiene alguna de estas categorías, no es para nosotros
+CATEGORIAS_NO = [
+    "sales", "business development", "commission", "lead generation", "telemarketing",
+    "video", "photography", "script writing", "architect", "building",
+    "structural", "cad", "translation", "data entry", "article writing",
+    "content writing", "voice", "animation", "motion graphics",
+]
+
+
+def es_de_programacion(p):
+    cats = " | ".join(j.get("name", "").lower() for j in (p.get("jobs") or []))
+    titulo = (p.get("title") or "").lower()
+    if any(w in cats or w in titulo for w in CATEGORIAS_NO):
+        return False
+    return any(w in cats for w in CATEGORIAS_OK)
+
+
 def presupuesto_usd(p):
     b = p.get("budget") or {}
     tasa = (p.get("currency") or {}).get("exchange_rate") or 1
-    maximo = b.get("maximum") or b.get("minimum") or 0
-    return maximo * tasa
+    minimo = b.get("minimum") or 0
+    maximo = b.get("maximum") or minimo
+    return (minimo + maximo) / 2 * tasa
 
 
 def buscar_proyectos():
@@ -72,6 +102,8 @@ def buscar_proyectos():
             if presupuesto_usd(p) < MIN_USD:
                 continue
             if any(w in texto for w in PROHIBIDAS):
+                continue
+            if not es_de_programacion(p):
                 continue
             proyectos[p["id"]] = p
     # Mejores primero: menos competencia y más plata
