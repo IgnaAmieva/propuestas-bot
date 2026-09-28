@@ -1,0 +1,21 @@
+name: Propuestas
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"   # cada 3 horas
+  workflow_dispatch:         # botón para probarlo a mano
+
+jobs:
+  buscar:
+    runs-on: ubuntu-latest
+    environment: NOMBRE_DEL_ENTORNO
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python bot.py
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
