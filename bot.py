@@ -114,6 +114,26 @@ def buscar_proyectos():
     return orden[:MAX_POR_TANDA], len(proyectos)
 
 
+def traducir(texto):
+    """Traduce al español gratis. Si falla, devuelve el texto original."""
+    if not texto:
+        return texto
+    try:
+        params = urllib.parse.urlencode({
+            "client": "gtx", "sl": "auto", "tl": "es", "dt": "t", "q": texto,
+        })
+        req = urllib.request.Request(
+            f"https://translate.googleapis.com/translate_a/single?{params}",
+            headers={"User-Agent": "Mozilla/5.0"},
+        )
+        with urllib.request.urlopen(req, timeout=20) as r:
+            data = json.loads(r.read().decode())
+        return "".join(parte[0] for parte in data[0] if parte[0])
+    except Exception as e:
+        print(f"No se pudo traducir: {e}")
+        return texto
+
+
 def enviar(texto):
     body = urllib.parse.urlencode({
         "chat_id": CHAT_ID, "text": texto[:4000],
@@ -130,14 +150,17 @@ def main():
         b = p.get("budget") or {}
         moneda = (p.get("currency") or {}).get("code", "")
         ofertas = (p.get("bid_stats") or {}).get("bid_count", 0)
-        desc = (p.get("preview_description") or "").strip()
-        if len(desc) > 300:
-            desc = desc[:300] + "…"
+        desc = (p.get("description") or p.get("preview_description") or "").strip()
+        if len(desc) > 700:
+            desc = desc[:700] + "…"
+        titulo = traducir(p.get("title", ""))
+        desc = traducir(desc)
         link = f"https://www.freelancer.com/projects/{p.get('seo_url', p['id'])}"
         enviar(
-            f"🟢 <b>{e(p.get('title', ''))}</b>\n"
+            f"🟢 <b>{e(titulo)}</b>\n"
             f"💰 {b.get('minimum')} - {b.get('maximum')} {e(moneda)} "
-            f"(~USD {presupuesto_usd(p):.0f}) · 👥 {ofertas} propuestas\n\n"
+            f"(~USD {presupuesto_usd(p):.0f}) · 👥 {ofertas} propuestas\n"
+            f"🆔 {p['id']}\n\n"
             f"{e(desc)}\n\n🔗 {link}"
         )
     if not proyectos and os.environ.get("GITHUB_EVENT_NAME") in ("workflow_dispatch", "push"):
