@@ -6,8 +6,8 @@ TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 HORAS = 2                 # cada cuánto corre (igual que el cron)
-MIN_USD = 30              # presupuesto mínimo en dólares
-MAX_OFERTAS_RIVALES = 40  # si ya tiene más propuestas, no vale la pena
+MIN_USD = 100             # presupuesto mínimo en dólares
+MAX_OFERTAS_RIVALES = 20  # si ya tiene más propuestas, no vale la pena
 MAX_POR_TANDA = 15        # tope de avisos por corrida (los mejores primero)
 
 BUSQUEDAS = [
