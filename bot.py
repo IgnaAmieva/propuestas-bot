@@ -12,20 +12,17 @@ MAX_POR_TANDA = 15        # tope de avisos por corrida (los mejores primero)
 
 BUSQUEDAS = [
     # Webs
-    "website", "landing page", "wordpress", "shopify", "wix", "web design",
-    "ecommerce", "página web", "sitio web",
+    "website", "landing page", "wordpress", "shopify", "web development",
+    "ecommerce", "página web", "sitio web", "fix website", "website bug",
     # Apps
-    "web app", "mobile app", "flutter", "react", "next.js", "android", "ios app",
-    "app development", "supabase", "firebase", "aplicación",
-    # Automatización
+    "web app", "mobile app", "flutter", "react", "next.js", "node.js",
+    "android app", "app development", "supabase", "firebase", "aplicación",
+    "php", "laravel", "javascript", "typescript", "full stack",
+    # Automatización / backend
     "automation", "n8n", "zapier", "make.com", "chatbot", "whatsapp bot",
-    "telegram bot", "api integration", "python script", "web scraping",
-    "ai agent", "automatización",
-    # Diseño / Canva
-    "canva", "graphic design", "logo", "flyer", "social media design",
-    "instagram post", "presentation design", "banner", "diseño gráfico",
-    # Redes
-    "social media manager", "instagram", "twitter",
+    "telegram bot", "api integration", "api development", "python script",
+    "web scraping", "ai agent", "openai api", "chrome extension",
+    "automatización", "programador",
 ]
 
 # Si el título o la descripción tienen alguna de estas, se descarta
