@@ -8,7 +8,7 @@ on:
 jobs:
   buscar:
     runs-on: ubuntu-latest
-    environment: NOMBRE_DEL_ENTORNO
+    environment: TELEGRAM_TOKEN
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
