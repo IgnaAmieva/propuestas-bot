@@ -5,19 +5,33 @@ CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 ANTHROPIC_KEY = os.environ["ANTHROPIC_API_KEY"]
 
 MODELO = "claude-haiku-4-5-20251001"  # barato y rápido
-HORAS = 3                # cada cuánto corre (igual que el cron)
-MAX_OFERTAS_RIVALES = 30 # si ya tiene más propuestas, no vale la pena
-MAX_POR_TANDA = 10       # tope de proyectos por corrida (controla el costo)
+HORAS = 2                # cada cuánto corre (igual que el cron)
+MAX_OFERTAS_RIVALES = 40 # si ya tiene más propuestas, no vale la pena
+MAX_POR_TANDA = 40       # tope de proyectos por corrida (controla el costo)
 
 BUSQUEDAS = [
-    "website", "landing page", "web app", "wordpress",
-    "flutter", "next.js", "mobile app",
+    # Webs
+    "website", "landing page", "wordpress", "shopify", "wix", "web design",
+    "ecommerce", "página web", "sitio web",
+    # Apps
+    "web app", "mobile app", "flutter", "react", "next.js", "android", "ios app",
+    "app development", "supabase", "firebase", "aplicación",
+    # Automatización
+    "automation", "n8n", "zapier", "make.com", "chatbot", "whatsapp bot",
+    "telegram bot", "api integration", "python script", "web scraping",
+    "ai agent", "automatización",
+    # Diseño / Canva
+    "canva", "graphic design", "logo", "flyer", "social media design",
+    "instagram post", "presentation design", "banner", "diseño gráfico",
+    # Redes
     "social media manager", "instagram", "twitter",
 ]
 
 PERFIL = """Sos el asistente de Igna, desarrollador freelance de Argentina.
 Qué hace: landing pages y webs para negocios, web apps y PWAs (Next.js, Supabase,
-Mercado Pago), apps móviles con Flutter, bots de WhatsApp y automatizaciones (n8n),
+Mercado Pago), apps móviles con Flutter, bots de WhatsApp/Telegram y automatizaciones
+(n8n, Zapier, Make, scripts en Python, integraciones de APIs, agentes de IA),
+diseño gráfico (Canva: posts, flyers, logos, presentaciones),
 y gestión de redes (Instagram y X/Twitter): contenido, diseño y publicación.
 Trabajos reales: PWA de pedidos con Mercado Pago, bot de turnos para una clínica,
 landings de e-commerce y de empresas.
@@ -27,7 +41,9 @@ Te paso un proyecto publicado por un cliente. Respondé SOLO un JSON:
  "propuesta": "propuesta lista para enviar", "traduccion": "traducción al español si la propuesta no está en español, si no vacío"}
 
 Reglas:
-- "sirve" es false si no encaja con lo que hace Igna, si es sospechoso/estafa,
+- Sé amplio: "sirve" es true para cualquier web, app, automatización, bot,
+  integración, script, diseño gráfico/Canva o redes que Igna pueda resolver.
+- "sirve" es false si claramente no encaja (ej: contabilidad, redacción larga, video 3D), si es sospechoso/estafa,
   o si pide cosas truchas (seguidores falsos, reseñas falsas, cuentas robadas).
 - La propuesta va en el idioma del proyecto, corta (máx 120 palabras), personalizada:
   mencioná algo concreto del pedido, cómo lo resolverías y una pregunta al final.
@@ -46,7 +62,7 @@ def buscar_proyectos():
     proyectos = {}
     for q in BUSQUEDAS:
         params = urllib.parse.urlencode({
-            "query": q, "limit": 20, "from_time": desde,
+            "query": q, "limit": 30, "from_time": desde,
             "full_description": "true", "job_details": "true",
         })
         url = f"https://www.freelancer.com/api/projects/0.1/projects/active/?{params}"

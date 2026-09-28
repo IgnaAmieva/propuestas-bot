@@ -2,7 +2,7 @@ name: Propuestas
 
 on:
   schedule:
-    - cron: "0 */3 * * *"   # cada 3 horas
+    - cron: "0 */2 * * *"   # cada 2 horas
   workflow_dispatch:         # botón para probarlo a mano
 
 jobs:
