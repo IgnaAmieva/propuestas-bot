@@ -108,7 +108,7 @@ def main():
             f"(~USD {presupuesto_usd(p):.0f}) · 👥 {ofertas} propuestas\n\n"
             f"{e(desc)}\n\n🔗 {link}"
         )
-    if not proyectos and os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch":
+    if not proyectos and os.environ.get("GITHUB_EVENT_NAME") in ("workflow_dispatch", "push"):
         enviar("✅ Bot funcionando. Esta vez no hubo proyectos que pasen el filtro.")
 
 
