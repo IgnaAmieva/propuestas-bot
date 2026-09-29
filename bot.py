@@ -61,6 +61,8 @@ CATEGORIAS_NO = [
     "video", "photography", "script writing", "architect", "building",
     "structural", "cad", "translation", "data entry", "article writing",
     "content writing", "voice", "animation", "motion graphics",
+    "ai art", "photoshop", "image editing", "illustration", "sap",
+    "regression testing", "erp", "salesforce",
 ]
 
 
