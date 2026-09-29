@@ -63,6 +63,7 @@ CATEGORIAS_NO = [
     "content writing", "voice", "animation", "motion graphics",
     "ai art", "photoshop", "image editing", "illustration", "sap",
     "regression testing", "erp", "salesforce",
+    "music", "audio", "mixing", "mastering", "sound", "producer", "singing",
 ]
 
 
