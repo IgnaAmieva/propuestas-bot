@@ -7,7 +7,7 @@ CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 HORAS = 12                # mira proyectos publicados en las últimas 12 h (no repite: guarda los enviados)
 MIN_USD = 50              # presupuesto mínimo (promedio del rango) en dólares
-MAX_OFERTAS_RIVALES = 30  # si ya tiene más propuestas, no vale la pena
+MAX_OFERTAS_RIVALES = 40  # si ya tiene más propuestas, no vale la pena
 MAX_POR_TANDA = 15        # tope de avisos por corrida (los mejores primero)
 ARCHIVO_ENVIADOS = "enviados.json"
 ESTADISTICAS = {}

@@ -2,7 +2,7 @@ name: Propuestas
 
 on:
   schedule:
-    - cron: "17 */2 * * *"  # cada 2 horas (minuto 17: GitHub se satura en punto)
+    - cron: "7,37 * * * *"   # cada 30 min: llegar primero a los proyectos nuevos
   workflow_dispatch:         # botón para probarlo a mano
   push:
     branches: [main]         # corre también cada vez que actualizo el bot
