@@ -10,6 +10,7 @@ MIN_USD = 50              # presupuesto mínimo (promedio del rango) en dólares
 MAX_OFERTAS_RIVALES = 30  # si ya tiene más propuestas, no vale la pena
 MAX_POR_TANDA = 15        # tope de avisos por corrida (los mejores primero)
 ARCHIVO_ENVIADOS = "enviados.json"
+ESTADISTICAS = {}
 
 # Categorías oficiales de Freelancer (las mismas habilidades de tu perfil y afines).
 # El bot busca sus IDs solo, así trae proyectos de esas categorías y no por palabra suelta.
@@ -101,6 +102,7 @@ def ids_de_categorias():
         except Exception as e:
             print(f"Error buscando categorías: {e}")
     print(f"Categorías encontradas: {len(ids)}")
+    ESTADISTICAS["categorias"] = len(ids)
     return ids
 
 
@@ -143,22 +145,32 @@ def buscar_proyectos(enviados):
         for p in traer_proyectos([("query", q)]):
             crudos[p["id"]] = p
     print(f"Proyectos nuevos vistos: {len(crudos)}")
+    ESTADISTICAS["vistos"] = len(crudos)
+    motivos = {"ya_enviado": 0, "muchas_ofertas": 0, "poca_plata": 0,
+               "prohibida": 0, "no_programacion": 0}
 
     proyectos = []
     for p in crudos.values():
         if p["id"] in enviados:
+            motivos["ya_enviado"] += 1
             continue
         texto = f"{p.get('title', '')} {p.get('preview_description', '')}".lower()
         if (p.get("bid_stats") or {}).get("bid_count", 0) >= MAX_OFERTAS_RIVALES:
+            motivos["muchas_ofertas"] += 1
             continue
         if presupuesto_usd(p) < MIN_USD:
+            motivos["poca_plata"] += 1
             continue
         if any(w in texto for w in PROHIBIDAS):
+            motivos["prohibida"] += 1
             continue
         if not es_de_programacion(p):
+            motivos["no_programacion"] += 1
             continue
         proyectos.append(p)
 
+    ESTADISTICAS["descartados"] = motivos
+    ESTADISTICAS["pasaron"] = len(proyectos)
     # Mejores primero: en español, menos competencia, más plata
     orden = sorted(proyectos, key=lambda p: (
         0 if (p.get("language") or "") == "es" else 1,
@@ -220,6 +232,9 @@ def main():
         )
         enviados.add(p["id"])
     guardar_enviados(enviados)
+    ESTADISTICAS["hora"] = time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime())
+    with open("estadisticas.json", "w") as f:
+        json.dump(ESTADISTICAS, f, indent=1)
     if not proyectos and os.environ.get("GITHUB_EVENT_NAME") in ("workflow_dispatch", "push"):
         enviar("✅ Bot funcionando. Esta vez no hubo proyectos que pasen el filtro.")
 
