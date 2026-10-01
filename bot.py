@@ -151,6 +151,9 @@ def buscar_proyectos(enviados):
 
     proyectos = []
     for p in crudos.values():
+        if (p.get("language") or "en") not in ("en", "es"):
+            motivos["otro_idioma"] = motivos.get("otro_idioma", 0) + 1
+            continue
         if p["id"] in enviados:
             motivos["ya_enviado"] += 1
             continue
