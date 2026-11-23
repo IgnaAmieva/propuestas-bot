@@ -1,14 +1,14 @@
 {
  "categorias": 38,
- "vistos": 136,
+ "vistos": 119,
  "descartados": {
-  "ya_enviado": 3,
-  "muchas_ofertas": 73,
-  "poca_plata": 21,
+  "ya_enviado": 6,
+  "muchas_ofertas": 61,
+  "poca_plata": 20,
   "prohibida": 2,
-  "no_programacion": 20,
-  "otro_idioma": 12
+  "no_programacion": 19,
+  "otro_idioma": 9
  },
- "pasaron": 5,
- "hora": "2026-11-22 21:42 UTC"
+ "pasaron": 2,
+ "hora": "2026-11-23 02:35 UTC"
 }
